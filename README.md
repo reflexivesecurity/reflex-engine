@@ -1,2 +1,2 @@
 # pangoloc-detect
-Establishes guardrails for AWS Environment
+Terraform modules for detective Guardrails in an AWS environment
