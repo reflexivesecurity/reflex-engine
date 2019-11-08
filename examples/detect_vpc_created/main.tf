@@ -3,9 +3,10 @@ provider "aws" {
 }
 
 module "example_cwe" {
-  source = "../../modules/event_rule"
-  name = "CreateVpcRule"
-  description = "Rule to check when VPC is created"
+  source = "../../modules/cwe_sns"
+  rule_name = "CreateVpcRule"
+  rule_description = "Rule to check when VPC is created"
+
   event_pattern = <<PATTERN
 {
   "detail-type": [
@@ -24,16 +25,7 @@ module "example_cwe" {
   }
 }
 PATTERN
-}
 
-module "sns_forwarder" {
-  source = "../../modules/sns_topic"
   topic_name = "CreateVpcTopic"
-}
-
-module "event_target" {
-  source = "../../modules/event_target"
-  event_rule_name = module.example_cwe.id
   target_id = "CreateVpcTarget"
-  target_arn = module.sns_forwarder.arn
 }
