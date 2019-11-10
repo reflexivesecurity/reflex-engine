@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "example_cwe" {
-  source = "../../modules/cwe_sns"
+  source = "../../modules/cwe_sns_email"
   rule_name = "CreateVpcRule"
   rule_description = "Rule to check when VPC is created"
 
@@ -28,4 +28,5 @@ PATTERN
 
   topic_name = "CreateVpcTopic"
   target_id = "CreateVpcTarget"
+  email = var.email
 }
