@@ -2,10 +2,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "detect_public_ami" {
+module "detect_deactivate_mfa" {
   source = "../modules/cwe_sns_email"
-  rule_name = "DetectPublicAmi"
-  rule_description = "Rule to check when VPC is created"
+  rule_name = "DetectMFADeactivate"
+  rule_description = "Rule to check when MFA Devices are Deactivated"
 
   event_pattern = <<PATTERN
 {
@@ -13,20 +13,20 @@ module "detect_public_ami" {
     "AWS API Call via CloudTrail"
   ],
   "source": [
-    "aws.ec2"
+    "aws.iam"
   ],
   "detail": {
     "eventSource": [
-      "ec2.amazonaws.com"
+      "iam.amazonaws.com"
     ],
     "eventName": [
-      "ModifyImageAttribute"
+      "DeactivateMFADevice"
     ]
   }
 }
 PATTERN
 
-  topic_name = "DetectPublicAmi"
-  target_id = "DetectPublicAmiTarget"
+  topic_name = "DetectDeactivateMFA"
+  target_id = "DetectDeactivateMFA"
   email = var.email
 }
