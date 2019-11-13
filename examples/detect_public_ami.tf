@@ -2,9 +2,9 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "example_cwe" {
-  source = "../../modules/cwe_sns_email"
-  rule_name = "CreateVpcRule"
+module "detect_public_ami" {
+  source = "../modules/cwe_sns_email"
+  rule_name = "DetectPublicAmi"
   rule_description = "Rule to check when VPC is created"
 
   event_pattern = <<PATTERN
@@ -20,13 +20,13 @@ module "example_cwe" {
       "ec2.amazonaws.com"
     ],
     "eventName": [
-      "CreateVpc"
+      "ModifyImageAttribute"
     ]
   }
 }
 PATTERN
 
-  topic_name = "CreateVpcTopic"
-  target_id = "CreateVpcTarget"
+  topic_name = "DetectPublicAmi"
+  target_id = "DetectPublicAmiTarget"
   email = var.email
 }
