@@ -1,6 +1,7 @@
 """ Module for enforcing S3EncryptionRule """
 
 import os
+import json
 
 import boto3
 
@@ -21,7 +22,7 @@ class S3EncryptionRule(AWSRule):
         self.bucket_name = event["detail"]["requestParameters"]["bucketName"]
 
     def resource_compliant(self):
-        return not self.bucket_encrypted()
+        return self.bucket_encrypted()
 
     def remediate(self):
         self.encrypt_bucket()
@@ -52,5 +53,6 @@ class S3EncryptionRule(AWSRule):
 
 def lambda_handler(event, _):
     """ Handles the incoming event """
-    s3_rule = S3EncryptionRule(event)
+    print(event)
+    s3_rule = S3EncryptionRule(json.loads(event['Records'][0]['body']))
     s3_rule.run_compliance_rule()
