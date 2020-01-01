@@ -41,7 +41,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-  role = "${aws_iam_role.iam_for_lambda.id}"
+  role       = "${aws_iam_role.iam_for_lambda.id}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
@@ -52,16 +52,16 @@ resource "aws_cloudwatch_log_group" "example" {
 
 
 resource "aws_lambda_function" "cwe_lambda" {
-  filename      = var.filename
-  function_name = var.function_name
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
-  handler       = var.handler
+  filename         = var.filename
+  function_name    = var.function_name
+  role             = "${aws_iam_role.iam_for_lambda.arn}"
+  handler          = var.handler
   source_code_hash = var.source_code_hash
 
   runtime = var.lambda_runtime
 
   environment {
     variables = var.environment_variable_map
-}
+  }
 }
 

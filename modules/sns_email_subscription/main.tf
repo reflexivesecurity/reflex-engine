@@ -1,8 +1,8 @@
 resource "aws_cloudformation_stack" "sns_topic" {
-  name          = var.stack_name
+  name = var.stack_name
   parameters = {
     DisplayName = var.topic_name
-    Email = var.notification_email
+    Email       = var.notification_email
   }
   template_body = <<STACK
 {
@@ -43,7 +43,7 @@ STACK
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn = "${aws_cloudformation_stack.sns_topic.outputs.ARN}"
+  arn    = "${aws_cloudformation_stack.sns_topic.outputs.ARN}"
   policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
 }
 
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
       type        = "Service"
       identifiers = var.service_identifiers
     }
-    
+
     resources = ["${aws_cloudformation_stack.sns_topic.outputs.ARN}"]
   }
 }

@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "sqs_queue" {
-  name                      = var.queue_name
-  delay_seconds             = var.delay_seconds
+  name          = var.queue_name
+  delay_seconds = var.delay_seconds
 }
 
 resource "aws_sqs_queue_policy" "queue_policy" {

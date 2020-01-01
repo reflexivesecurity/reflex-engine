@@ -6,15 +6,15 @@ module "cloudwatch_event_rule" {
 }
 
 module "sns_forwarder" {
-  source = "../sns_email_subscription"
-  topic_name = var.topic_name
-  stack_name = "EmailSNSStack${var.topic_name}"
+  source             = "../sns_email_subscription"
+  topic_name         = var.topic_name
+  stack_name         = "EmailSNSStack${var.topic_name}"
   notification_email = var.email
 }
 
 module "event_target" {
-  source = "../event_target"
+  source          = "../event_target"
   event_rule_name = module.cloudwatch_event_rule.id
-  target_id = var.target_id
-  target_arn = module.sns_forwarder.arn
+  target_id       = var.target_id
+  target_arn      = module.sns_forwarder.arn
 }
