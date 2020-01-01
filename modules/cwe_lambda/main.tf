@@ -20,6 +20,7 @@ module "sqs_queue" {
   source = "../sqs_queue"
   queue_name = var.queue_name
   delay_seconds = var.delay_seconds
+  cwe_arn = module.cloudwatch_event_rule.arn
 }
 
 module "lambda_event_source_mapping" {

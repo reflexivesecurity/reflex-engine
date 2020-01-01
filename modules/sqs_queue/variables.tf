@@ -8,3 +8,8 @@ variable "delay_seconds" {
   type = number
   default = 0
 }
+
+variable "cwe_arn" {
+  description = "Arn of cloudwatch event to limit sqs permissions"
+  type = string
+}
