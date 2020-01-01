@@ -33,3 +33,8 @@ variable "sqs_queue_arn" {
   type        = string
 }
 
+variable "custom_lambda_policy" {
+  description = "Lambda policy specific to invoked lambda"
+  type        = string
+}
+

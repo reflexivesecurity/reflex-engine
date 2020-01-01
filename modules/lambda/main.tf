@@ -40,6 +40,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
 EOF
 }
 
+resource "aws_iam_role_policy" "custom_lambda_policy" {
+  name = "custom_lambda_policy"
+  role = "${aws_iam_role.iam_for_lambda.id}"
+
+  policy = var.custom_lambda_policy
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = "${aws_iam_role.iam_for_lambda.id}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
