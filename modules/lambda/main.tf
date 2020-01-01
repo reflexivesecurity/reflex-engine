@@ -18,6 +18,29 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
+resource "aws_iam_role_policy" "lambda_policy" {
+  name = "lambda_policy"
+  role = "${aws_iam_role.iam_for_lambda.id}"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes"
+      ],
+      "Effect": "Allow",
+      "Resource": "${var.sqs_queue_arn}"
+    }
+  ]
+}
+EOF
+}
+
+
 resource "aws_lambda_function" "cwe_lambda" {
   filename      = var.filename
   function_name = var.function_name
@@ -31,17 +54,4 @@ resource "aws_lambda_function" "cwe_lambda" {
     variables = var.environment_variable_map
 }
 }
-
-data "aws_caller_identity" "current" {}
-
-data "aws_region" "region" {}
-
-resource "aws_lambda_permission" "allow_events" {
-  statement_id  = "AllowExecutionFromEvents"
-  action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.cwe_lambda.function_name}"
-  principal     = "events.amazonaws.com"
-  source_arn    = "arn:aws:events:${data.aws_region.region.name}:${data.aws_caller_identity.current.account_id}:rule/*"
-}
-
 

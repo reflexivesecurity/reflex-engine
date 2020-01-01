@@ -28,3 +28,8 @@ variable "source_code_hash" {
   type = string
 }
 
+variable "sqs_queue_arn" {
+  description = "Arn of resource for sqs IAM permissions"
+  type = string
+}
+

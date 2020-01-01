@@ -13,6 +13,7 @@ module "lambda_endpoint" {
   source_code_hash = var.source_code_hash
   lambda_runtime = var.lambda_runtime
   environment_variable_map = var.environment_variable_map
+  sqs_queue_arn = module.sqs_queue.arn
 }
 
 module "sqs_queue" {
