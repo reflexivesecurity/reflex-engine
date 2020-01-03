@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "detect_root_user_activity" {
-  source = "../../modules/cwe_sns_email"
-  rule_name = "DetectRootUserActivity"
+  source           = "../../modules/cwe_sns_email"
+  rule_name        = "DetectRootUserActivity"
   rule_description = "Rule to check when the root user performs any actions"
 
   event_pattern = <<PATTERN
@@ -22,6 +22,6 @@ module "detect_root_user_activity" {
 PATTERN
 
   topic_name = "DetectRootUserActivity"
-  target_id = "DetectRootUserActivity"
-  email = var.email
+  target_id  = "DetectRootUserActivity"
+  email      = var.email
 }

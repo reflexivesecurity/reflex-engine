@@ -3,7 +3,7 @@ resource "aws_sns_topic" "sns_topic" {
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn = "${aws_sns_topic.sns_topic.arn}"
+  arn    = "${aws_sns_topic.sns_topic.arn}"
   policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
 }
 
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
       type        = "Service"
       identifiers = var.service_identifiers
     }
-    
+
     resources = ["${aws_sns_topic.sns_topic.arn}"]
   }
 }
