@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "detect_deactivate_mfa" {
-  source = "../../modules/cwe_sns_email"
-  rule_name = "DetectMFADeactivate"
+  source           = "../../modules/cwe_sns_email"
+  rule_name        = "DetectMFADeactivate"
   rule_description = "Rule to check when MFA Devices are Deactivated"
 
   event_pattern = <<PATTERN
@@ -27,6 +27,6 @@ module "detect_deactivate_mfa" {
 PATTERN
 
   topic_name = "DetectDeactivateMFA"
-  target_id = "DetectDeactivateMFA"
-  email = var.email
+  target_id  = "DetectDeactivateMFA"
+  email      = var.email
 }
