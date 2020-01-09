@@ -3,7 +3,7 @@ import click
 from pangolock_cli.cli import pass_environment
 
 
-@click.command("apply", short_help="Runs `terraform plan`")
+@click.command("plan", short_help="Runs `terraform plan`")
 @click.argument("tf_args", nargs=-1)
 @pass_environment
 def cli(ctx):
