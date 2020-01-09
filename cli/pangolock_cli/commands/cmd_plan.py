@@ -4,6 +4,7 @@ from pangolock_cli.cli import pass_environment
 
 
 @click.command("apply", short_help="Runs `terraform plan`")
+@click.argument("tf_args", nargs=-1)
 @pass_environment
 def cli(ctx):
     """
@@ -17,9 +18,8 @@ def cli(ctx):
     this plan exactly.
     """
 
-    process = subprocess.Popen(
-        "terraform plan", shell=True
-    )
+    tf_args_str = " ".join(tf_args)
+    process = subprocess.Popen("terraform plan {tf_args_str}", shell=True)
     stdout, stderr = process.communicate()
 
     ctx.log(stdout)

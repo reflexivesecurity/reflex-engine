@@ -18,9 +18,7 @@ def cli(ctx):
     used to only execute a pre-determined set of actions.
     """
 
-    process = subprocess.Popen(
-        "terraform apply", shell=True
-    )
+    process = subprocess.Popen("terraform apply", shell=True)
     stdout, stderr = process.communicate()
 
     ctx.log(stdout)
