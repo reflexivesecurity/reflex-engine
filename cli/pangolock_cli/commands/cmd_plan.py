@@ -18,7 +18,7 @@ def cli(ctx):
     """
 
     process = subprocess.Popen(
-        ["terraform", "plan"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        "terraform plan", shell=True
     )
     stdout, stderr = process.communicate()
 

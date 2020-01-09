@@ -19,7 +19,7 @@ def cli(ctx):
     """
 
     process = subprocess.Popen(
-        ["terraform", "apply"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        "terraform apply", shell=True
     )
     stdout, stderr = process.communicate()
 
