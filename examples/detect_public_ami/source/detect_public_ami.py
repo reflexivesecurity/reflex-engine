@@ -21,17 +21,24 @@ class PublicAMIRule(AWSRule):
         self.ami_image_id = event["detail"]["requestParameters"]["imageId"]
 
     def resource_compliant(self):
+        is_compliant = True
         response = self.client.describe_image_attribute(
-            Attribute="launchPermission", imageId=self.ami_image_id
+            Attribute="launchPermission", ImageId=self.ami_image_id
         )
-        if response["LaunchPermissions"][0]["Group"] == "all":
-            return False
-        return True
+
+        for permission in response["LaunchPermissions"]:
+            try:
+                if permission["Group"] == "all":
+                    is_compliant = False
+            except KeyError:
+                continue
+
+        return is_compliant
 
     def remediate(self):
         self.client.modify_image_attribute(
             Attribute="launchPermission",
-            imageId=self.ami_image_id,
+            ImageId=self.ami_image_id,
             LaunchPermission={"Remove": [{"Group": "all"}]},
         )
 
