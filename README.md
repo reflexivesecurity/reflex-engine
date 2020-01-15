@@ -1,14 +1,7 @@
-# pangoloc-detect
-Terraform modules for detective Guardrails in an AWS environment
+# reflex
+These are the engine terraform modules that drive the reflex event driven detective and remediative infrastructure for your cloud environment. 
 
 ## Overview
-Pangoloc provides an infrastructure-as-code first approach to creating security controls in your AWS environment. 
+reflex provides an infrastructure-as-code first approach to creating detective controls in your AWS environment. 
 
-Using pangoloc, you can expect to:
-* Be notified when an offending resource is launched in your AWS environment.
-* See autoremediative actions take place automatically when certain conditions are met.
-* Extend the solution to account for any scenarios that you wish to detect.
-
-## Installation
-
-## Examples
+The modules in this repository are meant to be consumed by other detective rules that are specified as part of the reflex system and by custom rules made by end users. For example, the cwe_sns_email module can be used to very simply forward a specified CloudWatch Event to an SNS Topic that has an email subscription.
