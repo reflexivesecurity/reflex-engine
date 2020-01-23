@@ -1,5 +1,5 @@
-variable "filename" {
-  description = "Filename location of Lambda source zip"
+variable "source_code_dir" {
+  description = "Directory holding Lambda source code"
   type        = string
 }
 
@@ -21,11 +21,6 @@ variable "lambda_runtime" {
 variable "environment_variable_map" {
   description = "Map of environment variables for Lambda"
   type        = map(string)
-}
-
-variable "source_code_hash" {
-  description = "Hash value of Lambda source"
-  type        = string
 }
 
 variable "sqs_queue_arn" {

@@ -57,13 +57,12 @@ resource "aws_cloudwatch_log_group" "example" {
   retention_in_days = 14
 }
 
-
 resource "aws_lambda_function" "cwe_lambda" {
-  filename         = var.filename
+  filename         = data.archive_file.source.output_path
   function_name    = var.function_name
   role             = "${aws_iam_role.iam_for_lambda.arn}"
   handler          = var.handler
-  source_code_hash = var.source_code_hash
+  source_code_hash = data.archive_file.source.output_base64sha256
 
   runtime = var.lambda_runtime
 
@@ -72,3 +71,18 @@ resource "aws_lambda_function" "cwe_lambda" {
   }
 }
 
+data "archive_file" "source" {
+  type        = "zip"
+  source_dir  = var.source_code_dir
+  output_path = "${path.cwd}/${var.function_name}-source.zip"
+
+  depends_on = [
+    null_resource.pip_install,
+  ]
+}
+
+resource "null_resource" "pip_install" {
+  provisioner "local-exec" {
+    command = "pip install -r ${var.source_code_dir}/requirements.txt -t ${var.source_code_dir}"
+  }
+}

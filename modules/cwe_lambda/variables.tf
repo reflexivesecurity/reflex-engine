@@ -17,16 +17,11 @@ variable "target_id" {
   description = "Target ID"
   type        = string
 }
-variable "filename" {
-  description = "Filename location of Lambda source zip"
+
+variable "source_code_dir" {
+  description = "Directory holding Lambda source code"
   type        = string
 }
-
-variable "source_code_hash" {
-  description = "Hash value of Lambda source"
-  type        = string
-}
-
 
 variable "function_name" {
   description = "Clean name for Lambda function"

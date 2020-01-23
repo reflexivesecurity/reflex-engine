@@ -8,13 +8,12 @@ module "cloudwatch_event_rule" {
 module "lambda_endpoint" {
   source                   = "../lambda"
   function_name            = var.function_name
-  filename                 = var.filename
+  source_code_dir          = var.source_code_dir
   handler                  = var.handler
-  source_code_hash         = var.source_code_hash
   lambda_runtime           = var.lambda_runtime
   environment_variable_map = var.environment_variable_map
   sqs_queue_arn            = module.sqs_queue.arn
-  custom_lambda_policy  = var.custom_lambda_policy
+  custom_lambda_policy     = var.custom_lambda_policy
 }
 
 module "sqs_queue" {
