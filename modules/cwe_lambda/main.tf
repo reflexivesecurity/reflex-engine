@@ -13,6 +13,7 @@ module "lambda_endpoint" {
   lambda_runtime           = var.lambda_runtime
   environment_variable_map = var.environment_variable_map
   sqs_queue_arn            = module.sqs_queue.arn
+  sns_topic_arn            = module.sns_forwarder.arn
   custom_lambda_policy     = var.custom_lambda_policy
 }
 

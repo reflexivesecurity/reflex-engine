@@ -22,6 +22,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
       "Type" : "AWS::SNS::Topic",
       "Properties" : {
         "DisplayName" : { "Ref" : "DisplayName" },
+        "TopicName" : { "Ref" : "DisplayName" },
         "Subscription": [
           {
            "Endpoint" : { "Ref" : "Email" },

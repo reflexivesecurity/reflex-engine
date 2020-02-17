@@ -34,7 +34,16 @@ resource "aws_iam_role_policy" "lambda_policy" {
       ],
       "Effect": "Allow",
       "Resource": "${var.sqs_queue_arn}"
-    }
+    },
+    {
+      "Action": [
+        "sns:Publish"
+      ],
+      "Effect": "Allow",
+      "Resource": "${var.sns_topic_arn}"
+    },
+
+
   ]
 }
 EOF
