@@ -32,4 +32,8 @@ variable "custom_lambda_policy" {
   description = "Lambda policy specific to invoked lambda"
   type        = string
 }
+variable "sns_topic_arn" {
+  description = "Topic arn for deployed notification topic"
+  type        = string
+}
 
