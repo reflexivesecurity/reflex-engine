@@ -41,9 +41,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
       ],
       "Effect": "Allow",
       "Resource": "${var.sns_topic_arn}"
-    },
-
-
+    }
   ]
 }
 EOF
