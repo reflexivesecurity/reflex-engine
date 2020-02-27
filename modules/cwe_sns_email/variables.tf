@@ -13,16 +13,10 @@ variable "event_pattern" {
   type        = string
 }
 
-variable "topic_name" {
-  description = "A name for the SNS Topic"
+variable "sns_topic_arn" {
+  description = "Topic ARN for event target"
   type        = string
 }
-
-variable "email" {
-  description = "Email endpoint for SNS topic"
-  type        = string
-}
-
 
 variable "target_id" {
   description = "Target ID"
