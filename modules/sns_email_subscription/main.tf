@@ -44,8 +44,8 @@ STACK
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn    = "${aws_cloudformation_stack.sns_topic.outputs.ARN}"
-  policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
+  arn    = aws_cloudformation_stack.sns_topic.outputs.ARN
+  policy = data.aws_iam_policy_document.sns_topic_policy.json
 }
 
 data "aws_iam_policy_document" "sns_topic_policy" {
@@ -57,6 +57,6 @@ data "aws_iam_policy_document" "sns_topic_policy" {
       identifiers = var.service_identifiers
     }
 
-    resources = ["${aws_cloudformation_stack.sns_topic.outputs.ARN}"]
+    resources = [aws_cloudformation_stack.sns_topic.outputs.ARN]
   }
 }
