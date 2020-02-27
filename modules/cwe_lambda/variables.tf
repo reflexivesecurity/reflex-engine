@@ -43,16 +43,6 @@ variable "environment_variable_map" {
   type        = map(string)
 }
 
-variable "email" {
-  description = "Email of end user for sns topic"
-  type        = string
-}
-
-variable "topic_name" {
-  description = "Name of sns topic"
-  type        = string
-}
-
 variable "queue_name" {
   description = "Name of sqs queue"
   type        = string
