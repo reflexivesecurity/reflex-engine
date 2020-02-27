@@ -13,7 +13,7 @@ module "lambda_endpoint" {
   lambda_runtime           = var.lambda_runtime
   environment_variable_map = var.environment_variable_map
   sqs_queue_arn            = module.sqs_queue.arn
-  sns_topic_arn            = module.sns_forwarder.arn
+  sns_topic_arn            = var.sns_topic_arn
   custom_lambda_policy     = var.custom_lambda_policy
 }
 
@@ -36,12 +36,4 @@ module "event_target" {
   target_id       = var.target_id
   target_arn      = module.sqs_queue.arn
 }
-
-module "sns_forwarder" {
-  source             = "../sns_email_subscription"
-  topic_name         = var.topic_name
-  stack_name         = "EmailSNSStack${var.topic_name}"
-  notification_email = var.email
-}
-
 
