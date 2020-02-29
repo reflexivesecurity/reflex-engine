@@ -26,6 +26,7 @@ jobs:
             echo ::set-env name=VERSION_CHANGED::${CHANGED}
             echo ::set-env name=VERSION::$(semantic version)
             echo ::set-env name=EGG::$(ls dist)
+            echo ::set-env name=RELEASE_BODY::$(semantic release-body)
         fi
         
     - name: Create Release
@@ -37,9 +38,6 @@ jobs:
       with:
         tag_name: ${{ env.VERSION }}
         release_name: Release ${{ env.VERSION }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
+        body: ${{ env.RELEASE_BODY }}
         draft: false
         prerelease: false
