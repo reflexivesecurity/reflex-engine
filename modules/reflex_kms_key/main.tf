@@ -66,6 +66,6 @@ EOF
 }
 
 resource "aws_kms_alias" "reflex_alias" {
-  name          = "alias/ReflexTestKey"
+  name          = "alias/ReflexKey"
   target_key_id = "${aws_kms_key.reflex_key.key_id}"
 }
