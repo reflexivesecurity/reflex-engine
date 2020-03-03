@@ -63,3 +63,8 @@ variable "sns_topic_arn" {
   description = "SNS Topic arn for lambda access to publish messages."
   type        = string
 }
+
+variable "sqs_kms_key_id" {
+  description = "KMS Key Id to be used with SQS"
+  type        = string
+}
