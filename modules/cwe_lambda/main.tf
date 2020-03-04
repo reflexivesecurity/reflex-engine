@@ -1,19 +1,19 @@
 module "cloudwatch_event_rule" {
-  source        = "modules/event_rule"
+  source        = "./modules/event_rule"
   name          = var.rule_name
   description   = var.rule_description
   event_pattern = var.event_pattern
 }
 
 module "event_target" {
-  source          = "modules/event_target"
+  source          = "./modules/event_target"
   event_rule_name = module.cloudwatch_event_rule.id
   target_id       = var.target_id
   target_arn      = module.sqs_queue.arn
 }
 
 module "sqs_queue" {
-  source         = "modules/sqs_queue"
+  source         = "./modules/sqs_queue"
   queue_name     = var.queue_name
   delay_seconds  = var.delay_seconds
   cwe_arn        = module.cloudwatch_event_rule.arn
@@ -21,13 +21,13 @@ module "sqs_queue" {
 }
 
 module "lambda_event_source_mapping" {
-  source           = "modules/lambda_event_source_mapping"
+  source           = "./modules/lambda_event_source_mapping"
   event_source_arn = module.sqs_queue.arn
   function_name    = module.lambda_endpoint.arn
 }
 
 module "lambda_endpoint" {
-  source                   = "modules/lambda"
+  source                   = "./modules/lambda"
   function_name            = var.function_name
   source_code_dir          = var.source_code_dir
   handler                  = var.handler
