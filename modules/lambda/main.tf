@@ -70,6 +70,7 @@ resource "aws_lambda_function" "cwe_lambda" {
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = var.handler
   source_code_hash = data.archive_file.source.output_base64sha256
+  timeout          = 900
 
   runtime = var.lambda_runtime
 
