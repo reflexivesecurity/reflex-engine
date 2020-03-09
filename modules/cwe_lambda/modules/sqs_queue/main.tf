@@ -1,7 +1,8 @@
 resource "aws_sqs_queue" "sqs_queue" {
-  name              = var.queue_name
-  delay_seconds     = var.delay_seconds
-  kms_master_key_id = var.sqs_kms_key_id
+  name                       = var.queue_name
+  delay_seconds              = var.delay_seconds
+  kms_master_key_id          = var.sqs_kms_key_id
+  visibility_timeout_seconds = 60
 }
 
 resource "aws_sqs_queue_policy" "queue_policy" {
