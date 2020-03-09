@@ -90,6 +90,10 @@ data "archive_file" "source" {
 }
 
 resource "null_resource" "pip_install" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
   provisioner "local-exec" {
     command = "pip install -r ${var.source_code_dir}/requirements.txt -t ${var.source_code_dir}"
   }
