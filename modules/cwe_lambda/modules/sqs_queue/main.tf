@@ -44,4 +44,3 @@ data "aws_iam_policy_document" "sqs_queue_policy" {
     resources = ["${aws_sqs_queue.sqs_queue.arn}"]
   }
 }
-
