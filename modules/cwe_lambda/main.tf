@@ -15,7 +15,6 @@ module "event_target" {
 module "sqs_dead_letter_queue" {
   source         = "./modules/sqs_dead_letter_queue"
   queue_name     = "${var.queue_name}-DLQ"
-  sqs_queue_arn  = module.sqs_queue.arn
   sqs_kms_key_id = var.sqs_kms_key_id
 }
 
