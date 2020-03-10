@@ -1,5 +1,5 @@
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
-  queue_url = "${aws_sqs_queue.sqs_dead_letter_queue.id}"
+  queue_url = "${var.sqs_dead_letter_queue_id}"
 
   policy = <<POLICY
 {
@@ -11,10 +11,10 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "sqs:SendMessage",
-      "Resource": "${aws_sqs_queue.sqs_dead_letter_queue.arn}",
+      "Resource": "${var.sqs_dead_letter_queue_arn}",
       "Condition": {
         "ArnEquals": {
-          "aws:SourceArn": "${aws_sqs_queue.sqs_queue.arn}",
+          "aws:SourceArn": "${var.sqs_queue_arn}",
         }
       }
     }
@@ -22,4 +22,3 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
 }
 POLICY
 }
-

@@ -1,6 +1,6 @@
 
 resource "aws_sqs_queue_policy" "queue_policy" {
-  queue_url = "${aws_sqs_queue.sqs_queue.id}"
+  queue_url = "${var.sqs_queue_id}"
 
   policy = <<POLICY
 {
@@ -12,7 +12,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "sqs:SendMessage",
-      "Resource": "${aws_sqs_queue.sqs_queue.arn}",
+      "Resource": "${var.sqs_queue_arn}",
       "Condition": {
         "ArnEquals": {
           "aws:SourceArn": "${var.cwe_arn}"
@@ -35,6 +35,6 @@ data "aws_iam_policy_document" "sqs_queue_policy" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = ["${aws_sqs_queue.sqs_queue.arn}"]
+    resources = ["${var.sqs_queue_arn}"]
   }
 }
