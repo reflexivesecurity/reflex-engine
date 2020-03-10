@@ -34,8 +34,7 @@ variable "max_receive_count" {
 
 variable "sqs_dead_letter_queue_arn" {
   description = "Maxium number of retries of event before event is considered an error"
-  type        = number
-  default     = 3
+  type        = string
 }
 
 
