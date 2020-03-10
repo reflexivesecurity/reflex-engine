@@ -6,6 +6,18 @@ variable "delay_seconds" {
   default     = 0
 }
 
+variable "visibility_timeout_seconds" {
+  description = "Time in seconds that message is hidden from other consumers."
+  type        = number
+  default     = 60
+}
+
+variable "max_receive_count" {
+  description = "Maxium number of retries of event before event is considered an error"
+  type        = number
+  default     = 3
+}
+
 variable "cwe_arn" {
   description = "Arn of cloudwatch event to limit sqs permissions"
   type        = string
