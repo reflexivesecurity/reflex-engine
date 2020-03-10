@@ -3,11 +3,6 @@ variable "queue_name" {
   type        = string
 }
 
-variable "sqs_queue_arn" {
-  description = "Arn of sqs queue to limit sqs dead letter queue permissions"
-  type        = string
-}
-
 variable "sqs_kms_key_id" {
   description = "Key id for Reflex generic SQS infrastructure."
   type        = string
