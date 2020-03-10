@@ -1,3 +1,4 @@
+
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
   queue_url = "${var.sqs_dead_letter_queue_id}"
 
@@ -14,7 +15,7 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
       "Resource": "${var.sqs_dead_letter_queue_arn}",
       "Condition": {
         "ArnEquals": {
-          "aws:SourceArn": "${var.sqs_queue_arn}",
+          "aws:SourceArn": "${var.sqs_queue_arn}"
         }
       }
     }
