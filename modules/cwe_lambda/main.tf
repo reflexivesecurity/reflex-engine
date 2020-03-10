@@ -12,12 +12,21 @@ module "event_target" {
   target_arn      = module.sqs_queue.arn
 }
 
+module "sqs_dead_letter_queue" {
+  source         = "./modules/sqs_dead_letter_queue"
+  queue_name     = var.queue_name
+  sqs_queue_arn  = module.sqs_queue.arn
+  sqs_kms_key_id = var.sqs_kms_key_id
+}
+
+
 module "sqs_queue" {
   source         = "./modules/sqs_queue"
   queue_name     = var.queue_name
   delay_seconds  = var.delay_seconds
   cwe_arn        = module.cloudwatch_event_rule.arn
   sqs_kms_key_id = var.sqs_kms_key_id
+  sqs_dead_letter_queue_arn = module.sqs_dead_letter_queue.arn
 }
 
 module "lambda_event_source_mapping" {

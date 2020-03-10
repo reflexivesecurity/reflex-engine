@@ -3,12 +3,6 @@ variable "queue_name" {
   type        = string
 }
 
-variable "delay_seconds" {
-  description = "Time in seconds that delivery of messages in a queue is delayed"
-  type        = number
-  default     = 0
-}
-
 variable "sqs_queue_arn" {
   description = "Arn of sqs queue to limit sqs dead letter queue permissions"
   type        = string

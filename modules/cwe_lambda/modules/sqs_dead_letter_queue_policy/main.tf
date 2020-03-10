@@ -1,8 +1,3 @@
-resource "aws_sqs_queue" "sqs_dead_letter_queue" {
-  name                       = "${var.queue_name}-DLQ"
-  kms_master_key_id          = var.sqs_kms_key_id
-}
-
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
   queue_url = "${aws_sqs_queue.sqs_dead_letter_queue.id}"
 
@@ -27,3 +22,4 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
 }
 POLICY
 }
+
