@@ -57,6 +57,7 @@ variable "delay_seconds" {
 variable "custom_lambda_policy" {
   description = "Lambda policy specific to invoked lambda"
   type        = string
+  default     = null
 }
 
 variable "sns_topic_arn" {
