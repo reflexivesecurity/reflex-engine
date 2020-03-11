@@ -1,20 +1,15 @@
 # module
 
-This is a module that creates a Cloudwatch Event Rule with a specific pattern as inputs.
-
+This is a module that creates the policies for an SQS DLQ (Dead Letter Queue) to support the redrive policy of the main queue
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| topic_name | A name for the SNS Topic  | string |  | yes |
-| sns_actions | A list of actions to for topic policy | list(string) |  ["SNS:Publish"] | yes |
-| service_identifiers | Endpoints for services that will communicate with SNS | list(string) | ["events.amazonaws.com"] | yes |
-
+|------|-------------|------|---------|:-----:|
+| sqs\_dead\_letter\_queue\_arn | Arn of the dead letter queue | `string` | n/a | yes |
+| sqs\_dead\_letter\_queue\_id | ID of the DLQ SQS queue | `string` | n/a | yes |
+| sqs\_queue\_arn | Arn of the main SQS queue | `string` | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-|  this_aws_sns_topic_id | SNS Topic ID |
-|  this_aws_sns_topic_arn| SNS Topic Arn |
+No output.

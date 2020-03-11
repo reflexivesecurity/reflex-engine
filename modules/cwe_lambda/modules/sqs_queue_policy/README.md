@@ -1,20 +1,15 @@
 # module
 
-This is a module that creates a Cloudwatch Event Rule with a specific pattern as inputs.
-
+This is a module that creates the policies for a Cloudwatch Event Rule with a specific pattern as inputs.
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| topic_name | A name for the SNS Topic  | string |  | yes |
-| sns_actions | A list of actions to for topic policy | list(string) |  ["SNS:Publish"] | yes |
-| service_identifiers | Endpoints for services that will communicate with SNS | list(string) | ["events.amazonaws.com"] | yes |
-
+|------|-------------|------|---------|:-----:|
+| cwe\_arn | Arn of cloudwatch event to limit sqs permissions | `string` | n/a | yes |
+| sqs\_queue\_arn | Arn of the main SQS queue | `string` | n/a | yes |
+| sqs\_queue\_id | Id (url) of the main SQS queue | `string` | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-|  this_aws_sns_topic_id | SNS Topic ID |
-|  this_aws_sns_topic_arn| SNS Topic Arn |
+No output.
