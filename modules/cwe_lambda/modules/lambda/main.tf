@@ -48,6 +48,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "custom_lambda_policy" {
+  count = var.custom_lambda_policy != null ? 1 : 0
   name = "custom_lambda_policy"
   role = aws_iam_role.iam_for_lambda.id
 
