@@ -1,6 +1,6 @@
 
 resource "aws_sqs_queue_policy" "queue_policy" {
-  queue_url = "${var.sqs_queue_id}"
+  queue_url = var.sqs_queue_id
 
   policy = <<POLICY
 {
@@ -35,6 +35,6 @@ data "aws_iam_policy_document" "sqs_queue_policy" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = ["${var.sqs_queue_arn}"]
+    resources = [var.sqs_queue_arn]
   }
 }
