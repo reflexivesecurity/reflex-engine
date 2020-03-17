@@ -92,7 +92,7 @@ data "archive_file" "source" {
 
 resource "null_resource" "pip_install" {
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 
   provisioner "local-exec" {

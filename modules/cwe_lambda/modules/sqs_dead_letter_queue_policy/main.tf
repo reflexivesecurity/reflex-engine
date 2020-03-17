@@ -1,6 +1,6 @@
 
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
-  queue_url = "${var.sqs_dead_letter_queue_id}"
+  queue_url = var.sqs_dead_letter_queue_id
 
   policy = <<POLICY
 {
