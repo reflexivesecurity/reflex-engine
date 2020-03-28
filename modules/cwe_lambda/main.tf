@@ -58,4 +58,5 @@ module "lambda_endpoint" {
   sqs_queue_arn            = module.sqs_queue.arn
   sns_topic_arn            = var.sns_topic_arn
   custom_lambda_policy     = var.custom_lambda_policy
+  kms_key_id               = var.sqs_kms_key_id
 }
