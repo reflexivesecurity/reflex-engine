@@ -60,9 +60,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_cloudwatch_log_group" "example" {
+resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 14
+  kms_key_id        = var.kms_key_id
 }
 
 resource "aws_lambda_function" "cwe_lambda" {

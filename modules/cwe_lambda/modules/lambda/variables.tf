@@ -33,8 +33,13 @@ variable "custom_lambda_policy" {
   type        = string
   default     = null
 }
+
 variable "sns_topic_arn" {
   description = "Topic arn for deployed notification topic"
   type        = string
 }
 
+variable "kms_key_id" {
+  description = "KMS Key Id to be used with CloudWatch Logs"
+  type        = string
+}

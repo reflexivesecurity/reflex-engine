@@ -26,6 +26,7 @@ resource "aws_kms_key" "reflex_key" {
                 "Service": [
                     "events.amazonaws.com",
                     "lambda.amazonaws.com",
+                    "logs.amazonaws.com",
                     "sqs.amazonaws.com"
                 ]
             },
