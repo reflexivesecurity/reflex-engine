@@ -10,7 +10,9 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
     {
       "Sid": "First",
       "Effect": "Allow",
-      "Principal": "*",
+      "Principal": {
+        "Service": "sqs.amazonaws.com"
+      },
       "Action": "sqs:SendMessage",
       "Resource": "${var.sqs_dead_letter_queue_arn}",
       "Condition": {

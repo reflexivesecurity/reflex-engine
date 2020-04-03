@@ -10,7 +10,9 @@ resource "aws_sqs_queue_policy" "queue_policy" {
     {
       "Sid": "First",
       "Effect": "Allow",
-      "Principal": "*",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
       "Action": "sqs:SendMessage",
       "Resource": "${var.sqs_queue_arn}",
       "Condition": {
