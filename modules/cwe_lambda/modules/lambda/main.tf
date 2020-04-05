@@ -1,3 +1,7 @@
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_role" "iam_for_lambda" {
   name = "Reflex${var.function_name}Lambda"
 
@@ -49,8 +53,8 @@ EOF
 
 resource "aws_iam_role_policy" "custom_lambda_policy" {
   count = var.custom_lambda_policy != null ? 1 : 0
-  name = "custom_lambda_policy"
-  role = aws_iam_role.iam_for_lambda.id
+  name  = "custom_lambda_policy"
+  role  = aws_iam_role.iam_for_lambda.id
 
   policy = var.custom_lambda_policy
 }
@@ -63,7 +67,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 14
-  kms_key_id        = var.kms_key_id
+  kms_key_id        = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/${var.kms_key_id}"
 }
 
 resource "aws_lambda_function" "cwe_lambda" {
