@@ -5,6 +5,7 @@ data "aws_region" "current" {}
 resource "aws_kms_key" "reflex_key" {
   description             = "Reflex KMS Key"
   deletion_window_in_days = 7
+  enable_key_rotation     = true
   policy                  = <<EOF
 {
     "Version": "2012-10-17",
