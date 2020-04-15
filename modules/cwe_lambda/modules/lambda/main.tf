@@ -97,7 +97,8 @@ data "archive_file" "source" {
 
 resource "null_resource" "pip_install" {
   triggers = {
-    always_run = timestamp()
+    requirements = "${filesha1("source/requirements.txt"))}"
+    python       = "${filesha1(element(fileset("source/", "*.py"), 0))}"
   }
 
   provisioner "local-exec" {
