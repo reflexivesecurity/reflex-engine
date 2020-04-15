@@ -97,7 +97,7 @@ data "archive_file" "source" {
 
 resource "null_resource" "pip_install" {
   triggers = {
-    requirements = "${filesha1("source/requirements.txt"))}"
+    requirements = "${filesha1("source/requirements.txt")}"
     python       = "${filesha1(element(fileset("source/", "*.py"), 0))}"
   }
 
