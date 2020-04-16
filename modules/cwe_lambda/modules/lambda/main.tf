@@ -99,6 +99,7 @@ resource "null_resource" "pip_install" {
   triggers = {
     requirements = "${filesha1("${var.source_code_dir}/requirements.txt")}"
     python       = "${filesha1("${var.source_code_dir}/${sort(fileset(var.source_code_dir, "*.py"))[0]}")}"
+    zip          = data.archive_file.source.output_sha
   }
 
   provisioner "local-exec" {
