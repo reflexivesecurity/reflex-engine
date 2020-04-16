@@ -90,6 +90,18 @@ data "archive_file" "source" {
   source_dir  = var.source_code_dir
   output_path = "${path.cwd}/${var.function_name}-source.zip"
 
+  depends_on = [
+    null_resource.pip_install,
+  ]
+}
+
+resource "null_resource" "pip_install" {
+  triggers = {
+    requirements = "${filesha1("${var.source_code_dir}/requirements.txt")}"
+    python       = "${filesha1("${var.source_code_dir}/${sort(fileset(var.source_code_dir, "*.py"))[0]}")}"
+    zip          = data.archive_file.source.output_sha
+  }
+
   provisioner "local-exec" {
     command = "pip install -r ${var.source_code_dir}/requirements.txt -t ${var.source_code_dir}"
   }
