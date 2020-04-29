@@ -1,13 +1,7 @@
-module "cloudwatch_event_rule" {
-  source        = "./modules/event_rule"
-  name          = var.rule_name
-  description   = var.rule_description
-  event_pattern = var.event_pattern
-}
 
 module "event_target" {
   source          = "./modules/event_target"
-  event_rule_name = module.cloudwatch_event_rule.id
+  event_rule_name = var.cloudwatch_event_rule_id
   target_id       = var.target_id
   target_arn      = module.sqs_queue.arn
 }
@@ -22,23 +16,23 @@ module "sqs_queue" {
   source                    = "./modules/sqs_queue"
   queue_name                = var.queue_name
   delay_seconds             = var.delay_seconds
-  cwe_arn                   = module.cloudwatch_event_rule.arn
+  cwe_arn                   = var.cloudwatch_event_rule_arn
   sqs_kms_key_id            = var.sqs_kms_key_id
   sqs_dead_letter_queue_arn = module.sqs_dead_letter_queue.arn
 }
 
 module "sqs_queue_policy" {
-  source = "./modules/sqs_queue_policy"
-  cwe_arn = module.cloudwatch_event_rule.arn
-  sqs_queue_id = module.sqs_queue.id
+  source        = "./modules/sqs_queue_policy"
+  cwe_arn       = var.cloudwatch_event_rule_arn
+  sqs_queue_id  = module.sqs_queue.id
   sqs_queue_arn = module.sqs_queue.arn
 }
 
 module "sqs_dead_letter_queue_policy" {
-  source = "./modules/sqs_dead_letter_queue_policy"
+  source                    = "./modules/sqs_dead_letter_queue_policy"
   sqs_dead_letter_queue_arn = module.sqs_dead_letter_queue.arn
-  sqs_dead_letter_queue_id = module.sqs_dead_letter_queue.id
-  sqs_queue_arn = module.sqs_queue.arn
+  sqs_dead_letter_queue_id  = module.sqs_dead_letter_queue.id
+  sqs_queue_arn             = module.sqs_queue.arn
 }
 
 
