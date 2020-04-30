@@ -18,7 +18,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
       "Resource": "${var.sqs_queue_arn}",
       "Condition": {
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:events:*::${data.aws_caller_identity.current.account_id}:rule/${var.cwe_id}"
+          "aws:SourceArn": "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/${var.cwe_id}"
         }
       }
     }
