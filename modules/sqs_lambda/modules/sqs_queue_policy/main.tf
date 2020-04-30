@@ -9,7 +9,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
   "Id": "sqspolicy",
   "Statement": [
     {
-      "Sid": "First",
+      "Sid": "AllowCWE",
       "Effect": "Allow",
       "Principal": {
         "Service": "events.amazonaws.com"
@@ -19,6 +19,20 @@ resource "aws_sqs_queue_policy" "queue_policy" {
       "Condition": {
         "ArnLike": {
           "aws:SourceArn": "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/${var.cwe_id}"
+        }
+      }
+    },
+    {
+      "Sid": "AllowSNSTopic",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "sns.amazonaws.com"
+      },
+      "Action": "sqs:SendMessage",
+      "Resource": "${var.sqs_queue_arn}",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:Forwarder-${var.cwe_id}"
         }
       }
     }
