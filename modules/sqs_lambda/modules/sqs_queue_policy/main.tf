@@ -1,3 +1,4 @@
+data "aws_caller_identity" "current" {}
 
 resource "aws_sqs_queue_policy" "queue_policy" {
   queue_url = var.sqs_queue_id
@@ -16,8 +17,8 @@ resource "aws_sqs_queue_policy" "queue_policy" {
       "Action": "sqs:SendMessage",
       "Resource": "${var.sqs_queue_arn}",
       "Condition": {
-        "ArnEquals": {
-          "aws:SourceArn": "${var.cwe_arn}"
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:events:*::${data.aws_caller_identity.current.account_id}:rule/${var.cwe_id}"
         }
       }
     }

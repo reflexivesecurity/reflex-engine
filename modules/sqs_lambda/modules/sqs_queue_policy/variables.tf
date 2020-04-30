@@ -1,5 +1,5 @@
 
-variable "cwe_arn" {
+variable "cwe_id" {
   description = "Arn of cloudwatch event to limit sqs permissions"
   type        = string
 }

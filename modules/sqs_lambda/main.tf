@@ -23,7 +23,7 @@ module "sqs_queue" {
 
 module "sqs_queue_policy" {
   source        = "./modules/sqs_queue_policy"
-  cwe_arn       = var.cloudwatch_event_rule_arn
+  cwe_id        = var.cloudwatch_event_rule_id
   sqs_queue_id  = module.sqs_queue.id
   sqs_queue_arn = module.sqs_queue.arn
 }
