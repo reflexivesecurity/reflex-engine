@@ -1,7 +1,6 @@
-module "cloudwatch_event_rule" {
-  source        = "./modules/event_rule"
-  name          = var.rule_name
-  description   = var.rule_description
+resource "aws_cloudwatch_event_rule" "cwe_rule" {
+  name          = var.name
+  description   = var.description
   event_pattern = var.event_pattern
 }
 
