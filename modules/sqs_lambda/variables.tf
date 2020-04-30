@@ -1,3 +1,13 @@
+variable "cloudwatch_event_rule_id" {
+  description = "Cloudwatch event rule name"
+  type        = string
+}
+
+variable "cloudwatch_event_rule_arn" {
+  description = "Arn of previously generated event rule"
+  type        = string
+}
+
 variable "target_id" {
   description = "Target ID"
   type        = string

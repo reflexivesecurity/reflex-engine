@@ -1,15 +1,15 @@
-variable "rule_name" {
-  description = "A name for the Cloudwatch Event."
+variable "kms_key_id" {
+  description = "Key ID of reflex KMS key"
   type        = string
 }
 
-variable "rule_description" {
-  description = "A description for our CWE rule"
+variable "cloudwatch_event_rule_id" {
+  description = "Easy name for our CWE rule"
   type        = string
 }
 
-variable "event_pattern" {
-  description = "Event pattern that details the events to listen for."
+variable "central_queue_arn" {
+  description = "Central region SQS Queue arn"
   type        = string
 }
 
