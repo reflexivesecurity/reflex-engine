@@ -1,34 +1,43 @@
 resource "aws_sns_topic" "forwarder_topic" {
   name              = var.topic_name
   kms_master_key_id = var.kms_key_id
-  policy            = <<EOF
-{
-  "Version": "2008-10-17",
-  "Id": "__default_policy_ID",
-  "Statement": [
-    {
-      "Sid": "events_service",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
-      },
-      "Action": [
-        "SNS:GetTopicAttributes",
-        "SNS:SetTopicAttributes",
-        "SNS:AddPermission",
-        "SNS:RemovePermission",
-        "SNS:DeleteTopic",
-        "SNS:Subscribe",
-        "SNS:ListSubscriptionsByTopic",
-        "SNS:Publish",
-        "SNS:Receive"
-      ],
-      "Resource": "${aws_sns_topic.forwarder_topic.arn}"
-    }
-  ]
 }
-EOF
 
+resource "aws_sns_topic_policy" "events_policy" {
+  arn = "${aws_sns_topic.forwarder_topic.arn}"
+
+  policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
+}
+
+data "aws_iam_policy_document" "sns_topic_policy" {
+  policy_id = "__default_policy_ID"
+
+  statement {
+    actions = [
+      "SNS:Subscribe",
+      "SNS:SetTopicAttributes",
+      "SNS:RemovePermission",
+      "SNS:Receive",
+      "SNS:Publish",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:GetTopicAttributes",
+      "SNS:DeleteTopic",
+      "SNS:AddPermission",
+    ]
+
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [
+      "${aws_sns_topic.forwarder_topic.arn}",
+    ]
+
+    sid = "__default_statement_ID"
+  }
 }
 
 resource "aws_sns_topic_subscription" "cross_region_sqs_subscription" {
