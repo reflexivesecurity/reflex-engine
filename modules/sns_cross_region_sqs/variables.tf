@@ -8,9 +8,12 @@ variable "cloudwatch_event_rule_id" {
   type        = string
 }
 
-variable "central_queue_arn" {
-  description = "Central region SQS Queue arn"
+variable "central_region" {
+  description = "Central region to forward events to"
   type        = string
 }
 
-
+variable "central_queue_name" {
+  description = "Camel case name of queue found in central region"
+  type        = string
+}
