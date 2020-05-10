@@ -1,4 +1,6 @@
-
+/*
+* sqs_dead_letter_queue_policy: Creates a sqs queue policy for use as a DLQ
+*/
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
   queue_url = var.sqs_dead_letter_queue_id
 
