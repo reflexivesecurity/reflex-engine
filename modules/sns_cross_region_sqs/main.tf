@@ -9,7 +9,7 @@ resource "aws_sns_topic" "forwarder_topic" {
 }
 
 resource "aws_sns_topic_policy" "events_policy" {
-  arn = "${aws_sns_topic.forwarder_topic.arn}"
+  arn = aws_sns_topic.forwarder_topic.arn
 
   policy = "${data.aws_iam_policy_document.sns_topic_policy.json}"
 }
