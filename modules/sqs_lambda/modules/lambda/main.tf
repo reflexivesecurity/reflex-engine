@@ -7,7 +7,7 @@ data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "Reflex${var.function_name}Lambda"
+  name = "Reflex${var.function_name}LambdaExecution"
 
   assume_role_policy = <<EOF
 {
@@ -49,16 +49,44 @@ resource "aws_iam_role_policy" "lambda_policy" {
       ],
       "Effect": "Allow",
       "Resource": "${var.sns_topic_arn}"
+    },
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Effect": "Allow",
+      "Resource": "${aws_iam_role.assume_role.arn}"
     }
   ]
 }
 EOF
 }
 
+resource "aws_iam_role" "assume_role" {
+  name = "Reflex${var.function_name}LambdaAssume"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "AWS": "${aws_iam_role.iam_for_lambda.arn}"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+
 resource "aws_iam_role_policy" "custom_lambda_policy" {
   count = var.custom_lambda_policy != null ? 1 : 0
   name  = "custom_lambda_policy"
-  role  = aws_iam_role.iam_for_lambda.id
+  role  = aws_iam_role.assume_role.id
 
   policy = var.custom_lambda_policy
 }
@@ -85,7 +113,8 @@ resource "aws_lambda_function" "cwe_lambda" {
   runtime = var.lambda_runtime
 
   environment {
-    variables = var.environment_variable_map
+    variables = merge(var.environment_variable_map,
+    { "ASSUME_ROLE_NAME" = aws_iam_role.assume_role.name })
   }
 }
 
