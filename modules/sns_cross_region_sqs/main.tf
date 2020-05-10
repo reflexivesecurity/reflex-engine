@@ -55,6 +55,6 @@ resource "aws_sns_topic_subscription" "cross_region_sqs_subscription" {
 resource "aws_cloudwatch_event_target" "cwe_rule_target" {
   rule      = var.cloudwatch_event_rule_id
   target_id = "ForwarderTarget${var.cloudwatch_event_rule_id}"
-  arn       = module.sns_forwarder_topic.arn
+  arn       = aws_sns_topic.forwarder_topic.arn
 }
 
