@@ -19,7 +19,7 @@ module "sqs_queue" {
   delay_seconds             = var.delay_seconds
   cwe_arn                   = var.cloudwatch_event_rule_arn
   sqs_kms_key_id            = var.sqs_kms_key_id
-  sqs_dead_letter_queue_arn = module.sqs_dead_letter_queue.arn
+  sqs_dead_letter_queue_arn = aws_sqs_queue.sqs_dead_letter_queue.arn
 }
 
 module "sqs_queue_policy" {
@@ -31,11 +31,10 @@ module "sqs_queue_policy" {
 
 module "sqs_dead_letter_queue_policy" {
   source                    = "./modules/sqs_dead_letter_queue_policy"
-  sqs_dead_letter_queue_arn = module.sqs_dead_letter_queue.arn
-  sqs_dead_letter_queue_id  = module.sqs_dead_letter_queue.id
+  sqs_dead_letter_queue_arn = aws_sqs_queue.sqs_dead_letter_queue.arn
+  sqs_dead_letter_queue_id  = aws_sqs_queue.sqs_dead_letter_queue.id
   sqs_queue_arn             = module.sqs_queue.arn
 }
-
 
 module "lambda_event_source_mapping" {
   source           = "./modules/lambda_event_source_mapping"
