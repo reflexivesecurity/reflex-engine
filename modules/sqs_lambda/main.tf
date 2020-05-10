@@ -8,11 +8,9 @@ resource "aws_cloudwatch_event_target" "cwe_rule_target" {
   arn       = module.sqs_queue.arn
 }
 
-
-module "sqs_dead_letter_queue" {
-  source         = "./modules/sqs_dead_letter_queue"
-  queue_name     = "${var.queue_name}-DLQ"
-  sqs_kms_key_id = var.sqs_kms_key_id
+resource "aws_sqs_queue" "sqs_dead_letter_queue" {
+  name              = "${var.queue_name}-DLQ"
+  kms_master_key_id = var.sqs_kms_key_id
 }
 
 module "sqs_queue" {
