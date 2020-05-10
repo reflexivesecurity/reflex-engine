@@ -1,3 +1,7 @@
+/*
+* sns_email_subscription: Module to create an email subscribed SNS topic via cloudformation for reflex alerting.
+*/
+
 resource "aws_cloudformation_stack" "sns_topic" {
   name = var.stack_name
   parameters = {
