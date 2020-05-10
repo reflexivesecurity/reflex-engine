@@ -1,20 +1,30 @@
-# module
+lambda: Reflex module to create lambda function infrastructure for processing events.
 
-This is a module that creates a Cloudwatch Event Rule with a specific pattern as inputs.
+## Providers
 
+| Name | Version |
+|------|---------|
+| archive | n/a |
+| aws | n/a |
+| null | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| topic_name | A name for the SNS Topic  | string |  | yes |
-| sns_actions | A list of actions to for topic policy | list(string) |  ["SNS:Publish"] | yes |
-| service_identifiers | Endpoints for services that will communicate with SNS | list(string) | ["events.amazonaws.com"] | yes |
-
+|------|-------------|------|---------|:--------:|
+| custom\_lambda\_policy | Lambda policy specific to invoked lambda | `string` | `null` | no |
+| environment\_variable\_map | Map of environment variables for Lambda | `map(string)` | n/a | yes |
+| function\_name | Clean name for Lambda function | `string` | n/a | yes |
+| handler | Handler location for lambda function | `string` | n/a | yes |
+| kms\_key\_id | KMS Key Id to be used with CloudWatch Logs | `string` | n/a | yes |
+| lambda\_runtime | Language runtime for lambda function | `string` | n/a | yes |
+| sns\_topic\_arn | Topic arn for deployed notification topic | `string` | n/a | yes |
+| source\_code\_dir | Directory holding Lambda source code | `string` | n/a | yes |
+| sqs\_queue\_arn | Arn of resource for sqs IAM permissions | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-|  this_aws_sns_topic_id | SNS Topic ID |
-|  this_aws_sns_topic_arn| SNS Topic Arn |
+| arn | Lambda Arn |
+

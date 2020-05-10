@@ -1,3 +1,7 @@
+/*
+* lambda: Reflex module to create lambda function infrastructure for processing events.
+*/
+
 data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
