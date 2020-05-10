@@ -1,11 +1,15 @@
-# module
+sqs\_queue: Creation of sqs queue for the purposes of passing events to Lambda
 
-This is a module that creates an SQS queue of CloudWatch events for lambda to consume.
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | cwe\_arn | Arn of cloudwatch event to limit sqs permissions | `string` | n/a | yes |
 | delay\_seconds | Time in seconds that delivery of messages in a queue is delayed | `number` | `0` | no |
 | max\_receive\_count | Maxium number of retries of event before event is considered an error | `number` | `3` | no |
@@ -20,3 +24,4 @@ This is a module that creates an SQS queue of CloudWatch events for lambda to co
 |------|-------------|
 | arn | SQS Arn |
 | id | SQS ID |
+
