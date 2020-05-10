@@ -1,15 +1,20 @@
-# module
+sqs\_queue\_policy: Creates a sane queue policy for reflex sqs queues.
 
-This is a module that creates the policies for a Cloudwatch Event Rule with a specific pattern as inputs.
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
-| cwe\_arn | Arn of cloudwatch event to limit sqs permissions | `string` | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| cwe\_id | Arn of cloudwatch event to limit sqs permissions | `string` | n/a | yes |
 | sqs\_queue\_arn | Arn of the main SQS queue | `string` | n/a | yes |
 | sqs\_queue\_id | Id (url) of the main SQS queue | `string` | n/a | yes |
 
 ## Outputs
 
 No output.
+

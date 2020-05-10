@@ -1,3 +1,6 @@
+/*
+* sqs_queue_policy: Creates a sane queue policy for reflex sqs queues.
+*/
 data "aws_caller_identity" "current" {}
 
 resource "aws_sqs_queue_policy" "queue_policy" {
