@@ -1,4 +1,6 @@
-
+/*
+* sqs_lambda: module to generate the targeted sqs queue to lambda ingestion of event payloads
+*/
 module "event_target" {
   source          = "./modules/event_target"
   event_rule_name = var.cloudwatch_event_rule_id
