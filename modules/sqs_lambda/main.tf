@@ -1,12 +1,13 @@
 /*
 * sqs_lambda: module to generate the targeted sqs queue to lambda ingestion of event payloads
 */
-module "event_target" {
-  source          = "./modules/event_target"
-  event_rule_name = var.cloudwatch_event_rule_id
-  target_id       = var.target_id
-  target_arn      = module.sqs_queue.arn
+
+resource "aws_cloudwatch_event_target" "cwe_rule_target" {
+  rule      = var.cloudwatch_event_rule_id
+  target_id = var.target_id
+  arn       = module.sqs_queue.arn
 }
+
 
 module "sqs_dead_letter_queue" {
   source         = "./modules/sqs_dead_letter_queue"
