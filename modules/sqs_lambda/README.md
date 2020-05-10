@@ -2,7 +2,9 @@ sqs\_lambda: module to generate the targeted sqs queue to lambda ingestion of ev
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
