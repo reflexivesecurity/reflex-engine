@@ -1,14 +1,21 @@
-# module
+sns\_cross\_region\_sqs: module to create forwarder infrastructure using SNS topic publishing to a central SQS queue.
 
-This is a module that creates a Cloudwatch Event Rule with an SNS topic as its target.
+## Providers
 
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| rule_name | A name for the Cloudwatch Event  | string |  | yes |
-| rule_description | A description for our CWE rule | string |  | yes |
-| event_pattern | Event pattern that details the events to listen for | string |  | yes |
-| topic_name | Useful name for SNS Topic | string |  | yes |
-| target_id | Logical id for topic target | string |  | yes |
+|------|-------------|------|---------|:--------:|
+| central\_queue\_name | Camel case name of queue found in central region | `string` | n/a | yes |
+| central\_region | Central region to forward events to | `string` | n/a | yes |
+| cloudwatch\_event\_rule\_id | Easy name for our CWE rule | `string` | n/a | yes |
+| kms\_key\_id | Key ID of reflex KMS key | `string` | n/a | yes |
+
+## Outputs
+
+No output.
+
