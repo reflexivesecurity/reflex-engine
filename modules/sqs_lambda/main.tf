@@ -49,8 +49,9 @@ module "lambda_endpoint" {
   kms_key_id               = var.sqs_kms_key_id
 }
 
-module "lambda_event_source_mapping" {
-  source           = "./modules/lambda_event_source_mapping"
+resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   event_source_arn = module.sqs_queue.arn
+  enabled          = true
   function_name    = module.lambda_endpoint.arn
+  batch_size       = 1
 }
