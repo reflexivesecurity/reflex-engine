@@ -1,3 +1,5 @@
+CWE: A reusable module for creating and passing cloudwatch events.
+
 ## Providers
 
 | Name | Version |
