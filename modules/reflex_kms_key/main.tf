@@ -1,3 +1,7 @@
+/*
+* Reflex KMS Key: Creates a KMS key that will be used by reflex infrastructure for encryption. 
+*
+*/
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
