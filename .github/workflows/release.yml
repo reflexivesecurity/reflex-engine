@@ -21,6 +21,10 @@ jobs:
     - name: See if Version Changed
       run: |
         CHANGED=$(semantic changed)
+        if [ "${CHANGED}" == "False" ]
+          then
+            echo No release detected. If you expected a release, check if your commit contains a proper trigger word.
+        fi        
         if [ "${CHANGED}" == "True" ]
           then
             echo ::set-env name=VERSION_CHANGED::${CHANGED}
@@ -28,7 +32,7 @@ jobs:
             echo ::set-env name=EGG::$(ls dist)
             echo ::set-env name=RELEASE_BODY::$(semantic release-body)
         fi
-        
+
     - name: Create Release
       if: env.VERSION_CHANGED
       id: create_release
