@@ -35,15 +35,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
         "Service": "sns.amazonaws.com"
       },
       "Action": "sqs:SendMessage",
-      "Resource": "${var.sqs_queue_arn}",
-      "Condition": {
-        "ArnLike": {
-          "aws:SourceArn": "arn:aws:sns:*:*:Forwarder-${var.cwe_id}"
-        },
-        "StringEquals": {
-           "aws:PrincipalOrgID": "${data.aws_organizations_organization.current.id}"
-        }
-      }
+      "Resource": "${var.sqs_queue_arn}"
     }
   ]
 }
