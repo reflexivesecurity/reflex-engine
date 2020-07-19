@@ -93,6 +93,9 @@ resource "aws_cloudformation_stack" "sns_topic" {
                   "Arn"
               ]
           },
+          "Environment": {
+            "Variables" : { "SLACK_WEBHOOK_URL" : {"Ref": "SlackWebhookUrl"}}
+          },
           "Code": {
                   "ZipFile": {
                       "Fn::Join": [
