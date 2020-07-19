@@ -134,9 +134,6 @@ resource "aws_cloudformation_stack" "sns_topic" {
           },
           "Action": "lambda:InvokeFunction",
           "Principal": "sns.amazonaws.com",
-          "SourceAccount": {
-              "Ref": "AWS::AccountId"
-          },
           "SourceArn": {
               "Ref": "EmailSNSTopic"
           }
