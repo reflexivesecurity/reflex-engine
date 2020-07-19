@@ -3,7 +3,8 @@
 */
 
 resource "aws_cloudformation_stack" "sns_topic" {
-  name = var.stack_name
+  name         = var.stack_name
+  capabilities = ["CAPABILITY_IAM"]
   parameters = {
     DisplayName     = var.topic_name
     Email           = var.notification_email
