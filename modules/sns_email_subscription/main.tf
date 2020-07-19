@@ -5,8 +5,9 @@
 resource "aws_cloudformation_stack" "sns_topic" {
   name = var.stack_name
   parameters = {
-    DisplayName = var.topic_name
-    Email       = var.notification_email
+    DisplayName     = var.topic_name
+    Email           = var.notification_email
+    SlackWebhookUrl = var.slack_webhook
   }
   template_body = <<STACK
 {

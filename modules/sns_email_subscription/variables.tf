@@ -12,6 +12,13 @@ variable "notification_email" {
   description = "An email address to be notified by the topic"
   type        = string
 }
+
+variable "slack_webhook" {
+  description = "Webhook url for slack notification channel."
+  type        = string
+  default     = "none"
+}
+
 variable "sns_actions" {
   description = "A list of actions allowed"
   type        = list(string)
