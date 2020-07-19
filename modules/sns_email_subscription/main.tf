@@ -116,10 +116,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
                   }
               },
           "Runtime": "python3.7",
-          "Timeout": 25,
-          "TracingConfig": {
-              "Mode": "Active"
-          }
+          "Timeout": 25
       }
   },
   "SnsPermission": {
