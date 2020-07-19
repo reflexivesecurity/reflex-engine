@@ -155,6 +155,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
     }
   }
 }
+}
 STACK
 
 }
