@@ -20,10 +20,10 @@ resource "aws_cloudformation_stack" "sns_topic" {
     "Email" : {
       "Type" : "String",
       "Description" : "Email for SNS Notifications"
-    }
+    },
     "SlackWebhookUrl": {
       "Type" : "String",
-      "Default": "none"
+      "Default": "none",
       "Description" : "Slack webhook URL for notification."
     }
   },
@@ -34,7 +34,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
         ]
       }]
     }
-  }
+  },
   "Resources" : {
     "EmailSNSTopic": {
       "Type" : "AWS::SNS::Topic",
@@ -44,26 +44,26 @@ resource "aws_cloudformation_stack" "sns_topic" {
         "Subscription": {
           "Fn::If": [
             "SlackIntegration",
-            {
-              [
-                {
-                 "Endpoint" : { "Ref" : "Email" },
-                 "Protocol" : "email"
-                },
-               {
-                 "Endpoint" : { "Ref" : "SlackNotificationFunction" },
-                 "Protocol" : "lambda"
-                }
-              ]
-            },
-            {
-              [
-                {
-                 "Endpoint" : { "Ref" : "Email" },
-                 "Protocol" : "email"
-                }
-              ]
-            }
+            
+            [
+              {
+               "Endpoint" : { "Ref" : "Email" },
+               "Protocol" : "email"
+              },
+             {
+               "Endpoint" : { "Ref" : "SlackNotificationFunction" },
+               "Protocol" : "lambda"
+              }
+            ]
+            ,
+            
+            [
+              {
+               "Endpoint" : { "Ref" : "Email" },
+               "Protocol" : "email"
+              }
+            ]
+          
           ]
         }
 
@@ -116,7 +116,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
                           ]
                       ]
                   }
-              }
+              },
           "Runtime": "python3.7",
           "Timeout": 25,
           "TracingConfig": {
