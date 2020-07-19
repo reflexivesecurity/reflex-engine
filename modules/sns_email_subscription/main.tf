@@ -66,8 +66,8 @@ resource "aws_cloudformation_stack" "sns_topic" {
           
           ]
         }
-
-    },
+    }
+  }
   
     "LambdaExecutionRole": {
       "Condition": "SlackIntegration",
@@ -155,7 +155,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
     }
   }
 }
-}
+
 STACK
 
 }
