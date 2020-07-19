@@ -137,10 +137,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
               "Ref": "AWS::AccountId"
           },
           "SourceArn": {
-              "Fn::GetAtt": [
-                  "EmailSNSTopic",
-                  "Arn"
-              ]
+              "Ref": "EmailSNSTopic"
           }
       }
   }
