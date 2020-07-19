@@ -44,7 +44,6 @@ resource "aws_cloudformation_stack" "sns_topic" {
         "Subscription": {
           "Fn::If": [
             "SlackIntegration",
-            
             [
               {
                "Endpoint" : { "Ref" : "Email" },
@@ -56,18 +55,16 @@ resource "aws_cloudformation_stack" "sns_topic" {
               }
             ]
             ,
-            
             [
               {
                "Endpoint" : { "Ref" : "Email" },
                "Protocol" : "email"
               }
             ]
-          
           ]
         }
     }
-  }
+  },
   
     "LambdaExecutionRole": {
       "Condition": "SlackIntegration",
