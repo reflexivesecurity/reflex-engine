@@ -86,7 +86,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
       "Condition": "SlackIntegration",
       "Type": "AWS::Lambda::Function",
       "Properties": {
-          "Handler": "index.handler",
+          "Handler": "index.lambda_handler",
           "Role": {
               "Fn::GetAtt": [
                   "LambdaExecutionRole",
