@@ -51,7 +51,10 @@ resource "aws_cloudformation_stack" "sns_topic" {
                "Protocol" : "email"
               },
              {
-               "Endpoint" : { "Ref" : "SlackNotificationFunction" },
+               "Endpoint" : { "Fn::GetAtt": [
+                  "SlackNotificationFunction",
+                  "Arn"
+              ]},
                "Protocol" : "lambda"
               }
             ]
