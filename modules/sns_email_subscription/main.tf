@@ -130,10 +130,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
           "FunctionName": {
-              "Fn::GetAtt": [
-                  "SlackNotificationFunction",
-                  "Arn"
-              ]
+              "Ref": "SlackNotificationFunction"
           },
           "Action": "lambda:InvokeFunction",
           "Principal": "sns.amazonaws.com",
