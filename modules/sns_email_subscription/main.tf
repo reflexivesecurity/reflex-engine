@@ -22,30 +22,66 @@ resource "aws_cloudformation_stack" "sns_topic" {
     }
     "SlackWebhookUrl": {
       "Type" : "String",
+      "Default": "none"
       "Description" : "Slack webhook URL for notification."
     }
   },
+  "Conditions" : {
+    "SlackIntegration" : { "Fn::Not" : [{
+      "Fn::Equals" : [
+        {"Ref" : "SlackWebhookUrl"}, "none"
+        ]
+      }]
+    }
+  }
   "Resources" : {
     "EmailSNSTopic": {
       "Type" : "AWS::SNS::Topic",
       "Properties" : {
         "DisplayName" : { "Ref" : "DisplayName" },
         "TopicName" : { "Ref" : "DisplayName" },
-        "Subscription": [
-          {
-           "Endpoint" : { "Ref" : "Email" },
-           "Protocol" : "email"
-          },
-         {
-           "Endpoint" : { "Ref" : "SlackNotificationFunction" },
-           "Protocol" : "lambda"
-          }
+        "Subscription": {
+          "Fn::If": [
+            "SlackIntegration",
+            {
+              [
+                {
+                 "Endpoint" : { "Ref" : "Email" },
+                 "Protocol" : "email"
+                },
+               {
+                 "Endpoint" : { "Ref" : "SlackNotificationFunction" },
+                 "Protocol" : "lambda"
+                }
+              ]
+            },
+            {
+              [
+                {
+                 "Endpoint" : { "Ref" : "Email" },
+                 "Protocol" : "email"
+                }
+              ]
+            }
+          ]
+        }
 
-        ]
-      }
     },
   
+    "LambdaExecutionRole": {
+      "Condition": "SlackIntegration",
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{ "Effect": "Allow", "Principal": {"Service": ["lambda.amazonaws.com"]}, "Action": ["sts:AssumeRole"] }]
+        },
+        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+           }
+    },
+
   "SlackNotificationFunction": {
+      "Condition": "SlackIntegration",
       "Type": "AWS::Lambda::Function",
       "Properties": {
           "Handler": "index.handler",
@@ -84,6 +120,29 @@ resource "aws_cloudformation_stack" "sns_topic" {
           "Timeout": 25,
           "TracingConfig": {
               "Mode": "Active"
+          }
+      }
+  },
+  "SnsPermission": {
+      "Condition": "SlackIntegration",
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+          "FunctionName": {
+              "Fn::GetAtt": [
+                  "SlackNotificationFunction",
+                  "Arn"
+              ]
+          },
+          "Action": "lambda:InvokeFunction",
+          "Principal": "sns.amazonaws.com",
+          "SourceAccount": {
+              "Ref": "AWS::AccountId"
+          },
+          "SourceArn": {
+              "Fn::GetAtt": [
+                  "EmailSNSTopic",
+                  "Arn"
+              ]
           }
       }
   }
