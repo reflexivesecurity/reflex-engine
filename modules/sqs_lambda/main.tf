@@ -39,7 +39,7 @@ module "sqs_dead_letter_queue_policy" {
 module "lambda_endpoint" {
   source                   = "./modules/lambda"
   function_name            = var.function_name
-  source_code_dir          = var.source_code_dir
+  package_location         = var.package_location
   handler                  = var.handler
   lambda_runtime           = var.lambda_runtime
   environment_variable_map = var.environment_variable_map

@@ -13,8 +13,8 @@ variable "target_id" {
   type        = string
 }
 
-variable "source_code_dir" {
-  description = "Directory holding Lambda source code"
+variable "package_location" {
+  description = "Path for the Lambda deployment package"
   type        = string
 }
 
