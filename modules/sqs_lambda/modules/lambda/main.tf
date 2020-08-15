@@ -103,11 +103,11 @@ resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
 }
 
 resource "aws_lambda_function" "cwe_lambda" {
-  filename         = data.archive_file.source.output_path
+  filename         = var.package_location
   function_name    = var.function_name
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = var.handler
-  source_code_hash = data.archive_file.source.output_base64sha256
+  source_code_hash = filebase64sha256(var.package_location)
   timeout          = 60
 
   runtime = var.lambda_runtime
@@ -115,25 +115,5 @@ resource "aws_lambda_function" "cwe_lambda" {
   environment {
     variables = merge(var.environment_variable_map,
     { "ASSUME_ROLE_NAME" = aws_iam_role.assume_role.name })
-  }
-}
-
-data "archive_file" "source" {
-  type        = "zip"
-  source_dir  = var.source_code_dir
-  output_path = "${path.cwd}/${var.function_name}-source.zip"
-
-  depends_on = [
-    null_resource.pip_install,
-  ]
-}
-
-resource "null_resource" "pip_install" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command = "pip install -r ${var.source_code_dir}/requirements.txt -t ${var.source_code_dir}"
   }
 }
