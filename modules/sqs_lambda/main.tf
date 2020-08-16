@@ -45,8 +45,14 @@ module "lambda_endpoint" {
   environment_variable_map = var.environment_variable_map
   sqs_queue_arn            = module.sqs_queue.arn
   sns_topic_arn            = var.sns_topic_arn
-  custom_lambda_policy     = var.custom_lambda_policy
   kms_key_id               = var.sqs_kms_key_id
+}
+
+module "iam_assume_role" {
+  source                    = "./modules/iam_assume_role"
+  function_name             = var.function_name
+  lambda_execution_role_arn = module.lambda_endpoint.execution_role_arn
+  custom_lambda_policy      = var.custom_lambda_policy
 }
 
 resource "aws_lambda_event_source_mapping" "event_source_mapping" {
