@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     sid = "__default_statement_ID"
   }
 }
-resource "custom_sns_subscription" "sqs_account_subscribe" {
+resource "null_resource" "sqs_account_subscribe" {
   provisioner "local-exec" {
     command = "aws sns subscribe --topic-arn $SNS_TOPIC_ARN --protocol sqs --notification-endpoint $SQS_QUEUE"
 
