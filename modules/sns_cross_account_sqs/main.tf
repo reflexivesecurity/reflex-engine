@@ -46,10 +46,11 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 }
 
 resource "aws_sns_topic_subscription" "cross_region_sqs_subscription" {
-  topic_arn            = aws_sns_topic.forwarder_topic.arn
-  protocol             = "sqs"
-  raw_message_delivery = "true"
-  endpoint             = "arn:aws:sqs:${var.central_region}:${var.parent_account}:${var.central_queue_name}"
+  topic_arn              = aws_sns_topic.forwarder_topic.arn
+  protocol               = "sqs"
+  raw_message_delivery   = "true"
+  endpoint_auto_confirms = "true"
+  endpoint               = "arn:aws:sqs:${var.central_region}:${var.parent_account}:${var.central_queue_name}"
 }
 
 resource "aws_cloudwatch_event_target" "cwe_rule_target" {
