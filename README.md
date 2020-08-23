@@ -8,5 +8,5 @@ The modules in this repository are meant to be consumed by other detective rules
 
 ## More Information
 
-- https://cloudmitigator.com/
-- https://docs.cloudmitigator.com/
+- https://reflexivesecurity.com/
+- https://docs.reflexivesecurity.com/
