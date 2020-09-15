@@ -28,12 +28,6 @@ variable "sqs_queue_arn" {
   type        = string
 }
 
-variable "custom_lambda_policy" {
-  description = "Lambda policy specific to invoked lambda"
-  type        = string
-  default     = null
-}
-
 variable "sns_topic_arn" {
   description = "Topic arn for deployed notification topic"
   type        = string

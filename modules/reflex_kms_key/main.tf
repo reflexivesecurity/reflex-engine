@@ -62,8 +62,7 @@ resource "aws_kms_key" "reflex_key" {
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
-                    "kms:ViaService": "sqs.${data.aws_region.current.name}.amazonaws.com",
-                    "kms:CallerAccount": "${data.aws_caller_identity.current.account_id}"
+                    "kms:ViaService": "sqs.${data.aws_region.current.name}.amazonaws.com"
                 }
             }
         }

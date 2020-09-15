@@ -1,7 +1,7 @@
 /*
 * sqs_queue_policy: Creates a sane queue policy for reflex sqs queues.
 */
-data "aws_caller_identity" "current" {}
+data "aws_organizations_organization" "current" {}
 
 resource "aws_sqs_queue_policy" "queue_policy" {
   queue_url = var.sqs_queue_id
@@ -21,7 +21,10 @@ resource "aws_sqs_queue_policy" "queue_policy" {
       "Resource": "${var.sqs_queue_arn}",
       "Condition": {
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/${var.cwe_id}"
+          "aws:SourceArn": "arn:aws:events:*:*:rule/${var.cwe_id}"
+        },
+        "StringEquals": {
+           "aws:PrincipalOrgID": "${data.aws_organizations_organization.current.id}"
         }
       }
     },
@@ -32,12 +35,7 @@ resource "aws_sqs_queue_policy" "queue_policy" {
         "Service": "sns.amazonaws.com"
       },
       "Action": "sqs:SendMessage",
-      "Resource": "${var.sqs_queue_arn}",
-      "Condition": {
-        "ArnLike": {
-          "aws:SourceArn": "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:Forwarder-${var.cwe_id}"
-        }
-      }
+      "Resource": "${var.sqs_queue_arn}"
     }
   ]
 }
