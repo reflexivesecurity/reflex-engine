@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 }
 resource "null_resource" "sqs_account_subscribe" {
   provisioner "local-exec" {
-    command = "aws sns subscribe --topic-arn $SNS_TOPIC_ARN --protocol sqs --notification-endpoint $SQS_QUEUE"
+    command = "aws sns subscribe --topic-arn $SNS_TOPIC_ARN --protocol sqs --notification-endpoint $SQS_QUEUE --attributes RawMessageDelivery=true"
 
     environment = {
       SNS_TOPIC_ARN = aws_sns_topic.forwarder_topic.arn
