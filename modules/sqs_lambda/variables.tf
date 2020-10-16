@@ -1,13 +1,11 @@
 variable "cloudwatch_event_rule_id" {
   description = "Cloudwatch event rule name"
   type        = string
-  default     = null
 }
 
 variable "cloudwatch_event_rule_arn" {
   description = "Arn of previously generated event rule"
   type        = string
-  default     = null
 }
 
 variable "target_id" {
