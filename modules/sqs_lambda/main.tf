@@ -17,7 +17,6 @@ module "sqs_queue" {
 }
 
 resource "aws_cloudwatch_event_target" "cwe_rule_target" {
-  count     = var.cloudwatch_event_rule_id != null ? 1 : 0
   rule      = var.cloudwatch_event_rule_id
   target_id = var.target_id
   arn       = module.sqs_queue.arn

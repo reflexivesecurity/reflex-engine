@@ -3,8 +3,7 @@
 */
 data "aws_caller_identity" "current" {}
 
-resource "aws_sqs_queue_policy" "cwe_queue_policy" {
-  count     = var.cwe_id != null ? 1 : 0
+resource "aws_sqs_queue_policy" "queue_policy" {
   queue_url = var.sqs_queue_id
 
   policy = <<POLICY
@@ -40,28 +39,6 @@ resource "aws_sqs_queue_policy" "cwe_queue_policy" {
 POLICY
 }
 
-resource "aws_sqs_queue_policy" "no_cwe_queue_policy" {
-  count     = var.cwe_id == null ? 1 : 0
-  queue_url = var.sqs_queue_id
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Id": "sqspolicy",
-  "Statement": [
-    {
-      "Sid": "AllowSNSTopic",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "sns.amazonaws.com"
-      },
-      "Action": "sqs:SendMessage",
-      "Resource": "${var.sqs_queue_arn}"
-    }
-  ]
-}
-POLICY
-}
 
 data "aws_iam_policy_document" "sqs_queue_policy" {
   statement {
