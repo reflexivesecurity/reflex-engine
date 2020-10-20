@@ -11,6 +11,6 @@ resource "aws_sqs_queue" "sqs_queue" {
     maxReceiveCount     = var.max_receive_count
   })
   tags = {
-    Reflex = timestamp()
+    Reflex = "true"
   }
 }

@@ -71,7 +71,7 @@ resource "aws_kms_key" "reflex_key" {
 EOF
 
   tags = {
-    Reflex = timestamp()
+    Reflex = "true"
   }
 }
 

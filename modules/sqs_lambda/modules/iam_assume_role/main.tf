@@ -6,7 +6,7 @@ resource "aws_iam_role" "assume_role" {
   name = "Reflex${var.function_name}LambdaAssume"
 
   tags = {
-    Reflex = timestamp()
+    Reflex = "true"
   }
 
   assume_role_policy = <<EOF

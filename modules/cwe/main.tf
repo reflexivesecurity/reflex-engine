@@ -6,7 +6,7 @@ resource "aws_cloudwatch_event_rule" "cwe_rule" {
   description   = var.description
   event_pattern = var.event_pattern
   tags = {
-    Reflex = timestamp()
+    Reflex = "true"
   }
 }
 
