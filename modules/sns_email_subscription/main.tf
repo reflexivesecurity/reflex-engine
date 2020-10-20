@@ -10,6 +10,9 @@ resource "aws_cloudformation_stack" "sns_topic" {
     Email           = var.notification_email
     SlackWebhookUrl = var.slack_webhook
   }
+  tags = {
+    Reflex = "true"
+  }
   template_body = <<STACK
 {
   "AWSTemplateFormatVersion": "2010-09-09",
@@ -41,6 +44,7 @@ resource "aws_cloudformation_stack" "sns_topic" {
       "Type" : "AWS::SNS::Topic",
       "Properties" : {
         "DisplayName" : { "Ref" : "DisplayName" },
+        "Tags": [{ "Key": "Reflex", "Value":"true"}],
         "TopicName" : { "Ref" : "DisplayName" },
         "Subscription": {
           "Fn::If": [
