@@ -87,4 +87,8 @@ resource "aws_lambda_function" "cwe_lambda" {
     variables = merge(var.environment_variable_map,
     { "ASSUME_ROLE_NAME" = "Reflex${var.function_name}LambdaAssume" })
   }
+
+  tags = {
+    Reflex = timestamp()
+  }
 }

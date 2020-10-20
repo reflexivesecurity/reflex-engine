@@ -69,6 +69,10 @@ resource "aws_kms_key" "reflex_key" {
     ]
 }
 EOF
+
+  tags = {
+    Reflex = timestamp()
+  }
 }
 
 resource "aws_kms_alias" "reflex_alias" {

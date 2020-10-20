@@ -10,4 +10,7 @@ resource "aws_sqs_queue" "sqs_queue" {
     deadLetterTargetArn = var.sqs_dead_letter_queue_arn
     maxReceiveCount     = var.max_receive_count
   })
+  tags = {
+    Reflex = timestamp()
+  }
 }
