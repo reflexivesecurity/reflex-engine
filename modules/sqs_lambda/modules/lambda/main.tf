@@ -24,6 +24,9 @@ resource "aws_iam_role" "iam_for_lambda" {
   ]
 }
 EOF
+  tags = {
+    Reflex = "true"
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_policy" {
@@ -86,5 +89,9 @@ resource "aws_lambda_function" "cwe_lambda" {
   environment {
     variables = merge(var.environment_variable_map,
     { "ASSUME_ROLE_NAME" = "Reflex${var.function_name}LambdaAssume" })
+  }
+
+  tags = {
+    Reflex = "true"
   }
 }

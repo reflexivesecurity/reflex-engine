@@ -6,6 +6,9 @@ data "aws_caller_identity" "current" {}
 resource "aws_sns_topic" "forwarder_topic" {
   name              = "Forwarder-${var.cloudwatch_event_rule_id}"
   kms_master_key_id = var.kms_key_id
+  tags = {
+    Reflex = "true"
+  }
 }
 
 resource "aws_sns_topic_policy" "events_policy" {
