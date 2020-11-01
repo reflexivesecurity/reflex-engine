@@ -64,3 +64,9 @@ variable "sqs_kms_key_id" {
   description = "KMS Key Id to be used with SQS"
   type        = string
 }
+
+variable "lambda_timeout" {
+  description = "Lambda timeout as a configuration setting"
+  type        = number
+  default     = 60
+}

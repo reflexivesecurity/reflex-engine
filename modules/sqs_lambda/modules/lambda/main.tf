@@ -82,7 +82,7 @@ resource "aws_lambda_function" "cwe_lambda" {
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = var.handler
   source_code_hash = filebase64sha256(var.package_location)
-  timeout          = 60
+  timeout          = var.lambda_timeout
 
   runtime = var.lambda_runtime
 
