@@ -61,5 +61,5 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   enabled          = true
   function_name    = module.lambda_endpoint.arn
   batch_size       = 1
-  depends_on       = module.lambda_endpoint
+  depends_on       = [module.lambda_endpoint]
 }
