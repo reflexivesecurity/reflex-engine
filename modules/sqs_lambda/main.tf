@@ -84,20 +84,6 @@ resource "aws_sqs_queue_policy" "queue_policy" {
 POLICY
 }
 
-data "aws_iam_policy_document" "sqs_queue_policy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sqs:SendMessage"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["events.amazonaws.com"]
-    }
-
-    resources = [aws_sqs_queue.sqs_queue.arn]
-  }
-}
-
 /*
 * sqs_dead_letter_queue_policy: Creates a sqs queue policy for use as a DLQ
 */
