@@ -3,17 +3,8 @@ data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
 /*
-* sqs_lambda: module to generate the targeted sqs queue to lambda ingestion of event payloads
-*/
-
-resource "aws_sqs_queue" "sqs_dead_letter_queue" {
-  name              = "${var.queue_name}-DLQ"
-  kms_master_key_id = var.sqs_kms_key_id
-}
-
-/*
-* sqs_queue: Creation of sqs queue for the purposes of passing events to Lambda
-*/
+ * SQS Queue
+ */
 resource "aws_sqs_queue" "sqs_queue" {
   name                       = var.queue_name
   delay_seconds              = var.delay_seconds
@@ -26,26 +17,6 @@ resource "aws_sqs_queue" "sqs_queue" {
   tags = {
     Reflex = "true"
   }
-}
-
-resource "aws_cloudwatch_event_target" "cwe_rule_target" {
-  rule      = var.cloudwatch_event_rule_id
-  target_id = var.target_id
-  arn       = aws_sqs_queue.sqs_queue.arn
-}
-
-module "iam_assume_role" {
-  source                    = "./modules/iam_assume_role"
-  function_name             = var.function_name
-  lambda_execution_role_arn = aws_iam_role.iam_for_lambda.arn
-  custom_lambda_policy      = var.custom_lambda_policy
-}
-
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
-  event_source_arn = aws_sqs_queue.sqs_queue.arn
-  enabled          = true
-  function_name    = aws_lambda_function.cwe_lambda.arn
-  batch_size       = 1
 }
 
 resource "aws_sqs_queue_policy" "queue_policy" {
@@ -85,8 +56,14 @@ POLICY
 }
 
 /*
-* sqs_dead_letter_queue_policy: Creates a sqs queue policy for use as a DLQ
-*/
+ * SQS Dead Letter Queue
+ */
+
+resource "aws_sqs_queue" "sqs_dead_letter_queue" {
+  name              = "${var.queue_name}-DLQ"
+  kms_master_key_id = var.sqs_kms_key_id
+}
+
 resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
   queue_url = aws_sqs_queue.sqs_dead_letter_queue.id
 
@@ -114,6 +91,48 @@ resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
 POLICY
 }
 
+/*
+ * Event Routing
+ */
+resource "aws_cloudwatch_event_target" "cwe_rule_target" {
+  rule      = var.cloudwatch_event_rule_id
+  target_id = var.target_id
+  arn       = aws_sqs_queue.sqs_queue.arn
+}
+
+resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+  event_source_arn = aws_sqs_queue.sqs_queue.arn
+  enabled          = true
+  function_name    = aws_lambda_function.cwe_lambda.arn
+  batch_size       = 1
+}
+
+/*
+ * Lambda Function
+ */
+resource "aws_lambda_function" "cwe_lambda" {
+  filename         = var.package_location
+  function_name    = var.function_name
+  role             = aws_iam_role.iam_for_lambda.arn
+  handler          = var.handler
+  source_code_hash = filebase64sha256(var.package_location)
+  timeout          = var.lambda_timeout
+
+  runtime = var.lambda_runtime
+
+  environment {
+    variables = merge(var.environment_variable_map,
+    { "ASSUME_ROLE_NAME" = "Reflex${var.function_name}LambdaAssume" })
+  }
+
+  tags = {
+    Reflex = "true"
+  }
+}
+
+/*
+ * Lambda IAM
+ */
 resource "aws_iam_role" "iam_for_lambda" {
   name = "Reflex${var.function_name}LambdaExecution"
 
@@ -178,28 +197,18 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+module "iam_assume_role" {
+  source                    = "./modules/iam_assume_role"
+  function_name             = var.function_name
+  lambda_execution_role_arn = aws_iam_role.iam_for_lambda.arn
+  custom_lambda_policy      = var.custom_lambda_policy
+}
+
+/*
+ * CloudWatch Logging
+ */
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 14
   kms_key_id        = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/${var.sqs_kms_key_id}"
-}
-
-resource "aws_lambda_function" "cwe_lambda" {
-  filename         = var.package_location
-  function_name    = var.function_name
-  role             = aws_iam_role.iam_for_lambda.arn
-  handler          = var.handler
-  source_code_hash = filebase64sha256(var.package_location)
-  timeout          = var.lambda_timeout
-
-  runtime = var.lambda_runtime
-
-  environment {
-    variables = merge(var.environment_variable_map,
-    { "ASSUME_ROLE_NAME" = "Reflex${var.function_name}LambdaAssume" })
-  }
-
-  tags = {
-    Reflex = "true"
-  }
 }
