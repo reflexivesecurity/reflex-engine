@@ -32,13 +32,6 @@ resource "aws_cloudwatch_event_target" "cwe_rule_target" {
   arn       = aws_sqs_queue.sqs_queue.arn
 }
 
-module "sqs_dead_letter_queue_policy" {
-  source                    = "./modules/sqs_dead_letter_queue_policy"
-  sqs_dead_letter_queue_arn = aws_sqs_queue.sqs_dead_letter_queue.arn
-  sqs_dead_letter_queue_id  = aws_sqs_queue.sqs_dead_letter_queue.id
-  sqs_queue_arn             = aws_sqs_queue.sqs_queue.arn
-}
-
 module "lambda_endpoint" {
   source                   = "./modules/lambda"
   function_name            = var.function_name
@@ -115,4 +108,34 @@ data "aws_iam_policy_document" "sqs_queue_policy" {
 
     resources = [aws_sqs_queue.sqs_queue.arn]
   }
+}
+
+/*
+* sqs_dead_letter_queue_policy: Creates a sqs queue policy for use as a DLQ
+*/
+resource "aws_sqs_queue_policy" "dead_letter_queue_policy" {
+  queue_url = aws_sqs_queue.sqs_dead_letter_queue.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "sqsDlqPolicy",
+  "Statement": [
+    {
+      "Sid": "First",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "sqs.amazonaws.com"
+      },
+      "Action": "sqs:SendMessage",
+      "Resource": "${aws_sqs_queue.sqs_dead_letter_queue.arn}",
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "${aws_sqs_queue.sqs_queue.arn}"
+        }
+      }
+    }
+  ]
+}
+POLICY
 }
