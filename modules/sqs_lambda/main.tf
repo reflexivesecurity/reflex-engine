@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 /*
 * sqs_lambda: module to generate the targeted sqs queue to lambda ingestion of event payloads
 */
@@ -28,13 +30,6 @@ resource "aws_cloudwatch_event_target" "cwe_rule_target" {
   rule      = var.cloudwatch_event_rule_id
   target_id = var.target_id
   arn       = aws_sqs_queue.sqs_queue.arn
-}
-
-module "sqs_queue_policy" {
-  source        = "./modules/sqs_queue_policy"
-  cwe_id        = var.cloudwatch_event_rule_id
-  sqs_queue_id  = aws_sqs_queue.sqs_queue.id
-  sqs_queue_arn = aws_sqs_queue.sqs_queue.arn
 }
 
 module "sqs_dead_letter_queue_policy" {
@@ -70,4 +65,54 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   function_name    = module.lambda_endpoint.arn
   batch_size       = 1
   depends_on       = [module.lambda_endpoint]
+}
+
+resource "aws_sqs_queue_policy" "queue_policy" {
+  queue_url = aws_sqs_queue.sqs_queue.id
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "sqspolicy",
+  "Statement": [
+    {
+      "Sid": "AllowCWE",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
+      "Action": "sqs:SendMessage",
+      "Resource": "${aws_sqs_queue.sqs_queue.arn}",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:events:*:${data.aws_caller_identity.current.account_id}:rule/${var.cloudwatch_event_rule_id}"
+        }
+      }
+    },
+    {
+      "Sid": "AllowSNSTopic",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "sns.amazonaws.com"
+      },
+      "Action": "sqs:SendMessage",
+      "Resource": "${aws_sqs_queue.sqs_queue.arn}"
+    }
+  ]
+}
+POLICY
+}
+
+data "aws_iam_policy_document" "sqs_queue_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sqs:SendMessage"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [aws_sqs_queue.sqs_queue.arn]
+  }
 }
