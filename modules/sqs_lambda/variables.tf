@@ -70,3 +70,15 @@ variable "lambda_timeout" {
   type        = number
   default     = 60
 }
+
+variable "visibility_timeout_seconds" {
+  description = "Time in seconds that message is hidden from other consumers."
+  type        = number
+  default     = 60
+}
+
+variable "max_receive_count" {
+  description = "Maxium number of retries of event before event is considered an error"
+  type        = number
+  default     = 3
+}
