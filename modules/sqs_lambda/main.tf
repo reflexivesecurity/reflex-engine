@@ -195,7 +195,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 resource "aws_cloudwatch_log_group" "cloudwatch_logs" {
   name              = "/aws/lambda/${var.function_name}"
   retention_in_days = 14
-  kms_key_id        = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/${var.kms_key_id}"
+  kms_key_id        = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/${var.sqs_kms_key_id}"
 }
 
 resource "aws_lambda_function" "cwe_lambda" {
