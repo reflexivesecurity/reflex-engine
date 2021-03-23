@@ -49,10 +49,23 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 }
 
 resource "aws_sns_topic_subscription" "cross_region_sqs_subscription" {
+  count                = var.parent_account ? 0 : 1
   topic_arn            = aws_sns_topic.forwarder_topic.arn
   protocol             = "sqs"
   raw_message_delivery = true
   endpoint             = "arn:aws:sqs:${var.central_region}:${data.aws_caller_identity.current.account_id}:${var.central_queue_name}"
+}
+
+resource "null_resource" "sqs_account_subscribe" {
+  count = var.parent_account ? 1 : 0
+  provisioner "local-exec" {
+    command = "aws sns subscribe --topic-arn $SNS_TOPIC_ARN --protocol sqs --notification-endpoint $SQS_QUEUE --attributes RawMessageDelivery=true"
+
+    environment = {
+      SNS_TOPIC_ARN = aws_sns_topic.forwarder_topic.arn
+      SQS_QUEUE     = "arn:aws:sqs:${var.central_region}:${var.parent_account}:${var.central_queue_name}"
+    }
+  }
 }
 
 resource "aws_cloudwatch_event_target" "cwe_rule_target" {
