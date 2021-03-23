@@ -17,3 +17,9 @@ variable "central_queue_name" {
   description = "Camel case name of queue found in central region"
   type        = string
 }
+
+variable "parent_account" {
+  description = "Account id that we will forward events to"
+  type        = string
+  default     = null
+}
