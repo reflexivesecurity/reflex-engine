@@ -196,13 +196,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-module "iam_assume_role" {
-  source                    = "./modules/iam_assume_role"
-  function_name             = var.function_name
-  lambda_execution_role_arn = aws_iam_role.iam_for_lambda.arn
-  custom_lambda_policy      = var.custom_lambda_policy
-}
-
 /*
  * CloudWatch Logging
  */

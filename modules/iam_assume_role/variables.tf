@@ -13,4 +13,3 @@ variable "custom_lambda_policy" {
   type        = string
   default     = null
 }
-
